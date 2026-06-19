@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {
+      ".prisma/client/*": ["./node_modules/.prisma/client/*"],
+      "@shared/*": ["../shared/*"]
+    }
+  },
+  "include": ["src/**/*"]
+}

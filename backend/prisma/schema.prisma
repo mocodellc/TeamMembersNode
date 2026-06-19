@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model TeamMember {
+  id            Int                @id @default(autoincrement()) @map("TeamMemberId")
+  firstName     String             @map("FirstName")
+  lastName      String             @map("LastName")
+  email         String             @unique @map("Email")
+  jobTitle      String             @map("JobTitle")
+  department    String             @map("Department")
+  country       String             @map("Country")
+  createdDate   DateTime           @default(now()) @map("CreatedDate")
+  lastEditDate  DateTime?          @map("LastEditDate")
+  deletedDate   DateTime?          @map("DeletedDate")
+  groups        TeamMemberGroups[]
+  @@map("TeamMembers")
+}
+
+model TeamGroups {
+  id          Int                @id @default(autoincrement()) @map("TeamGroupId")
+  name        String             @unique @map("Name")
+  description String             @map("Description")
+  createdDate DateTime           @default(now()) @map("CreatedDate")
+  members     TeamMemberGroups[]
+  @@map("TeamGroups")
+}
+
+model TeamMemberGroups {
+  id          Int        @id @default(autoincrement()) @map("TeamMemberGroupId")
+  teamMember  TeamMember @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  teamMemberId Int       @map("TeamMemberId")
+  teamGroup   TeamGroups @relation(fields: [teamGroupId], references: [id], onDelete: Cascade)
+  teamGroupId Int        @map("TeamGroupId")
+  @@unique([teamMemberId, teamGroupId])
+  @@map("TeamMemberGroups")
+}
